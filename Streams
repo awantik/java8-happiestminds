@@ -1,0 +1,191 @@
+Agenda -
+
+•	 What streams are
+•	 Differences between collections and streams
+•	 How to create streams from different types of data sources
+•	 How to represent an optional value using the Optional class
+•	 Applying different types of operations on streams
+•	 Collecting data from streams using collectors
+•	 Grouping and partitioning a stream’s data
+•	 Finding and matching data in streams
+•	 How to work with parallel streams
+
+
+What Is a Stream?
+
+An aggregate operation computes a single value from a collection of values. The result of an aggregate operation may
+be simply a primitive value, an object, or a void. Note that an object may represent a single entity such as a person or a
+collection of values such as a list, a set, a map, etc.
+
+A stream is a sequence of data elements supporting sequential and parallel aggregate operations. Computing the
+sum of all elements in a stream of integers, mapping all names in list to their lengths, etc. are examples of aggregate
+operations on streams.
+
+
+Looking at the definition of streams, it seems that they are like collections. So, how do streams differ from
+collections? Both are abstractions for a collection of data elements. Collections focus on storage of data elements
+for efficient access whereas streams focus on aggregate computations on data elements from a data source that is
+typically, but not necessarily, collections.
+
+
+Features of streams, comparing them with collections when necessary:
+•	 Streams have no storage.
+•	 Streams can represent a sequence of infinite elements.
+•	 The design of streams is based on internal iteration.
+•	 Streams are designed to be processed in parallel with no additional work from the developers.
+•	 Streams are designed to support functional programming.
+•	 Streams support lazy operations.
+•	 Streams can be ordered or unordered.
+•	 Streams cannot be reused.
+
+- Internal Iteration vs. External Iteration
+
+List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5);
+int sum = 0;
+for (int n : numbers) {
+if (n % 2 == 1) {
+int square = n * n;
+sum = sum + square;
+}
+}
+
+int sum = numbers.stream()
+.filter(n -> n % 2 == 1)
+.map(n -> n * n)
+.reduce(0, Integer::sum);
+
+
+//ParallelStream - fork & Join
+
+int sum = numbers.parallelStream()
+.filter(n -> n % 2 == 1)
+.map(n -> n * n)
+.reduce(0, Integer::sum);
+
+
+Streams are designed to use internal iteration. They provide an iterator() method that returns an Iterator to
+be used for external iteration of its elements. You will “never” need to iterate elements of a stream yourself using its
+iterator. If you ever need it, here is how to use it:
+ 
+// Get a list of integers from 1 to 5
+List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5);
+...
+// Get an iterator from the stream
+Iterator<Integer> iterator = numbers.stream().iterator();
+while(iterator.hasNext()) {
+int n = iterator.next();
+...
+}
+
+
+Imperative vs. Functional
+
+Collections support imperative programming whereas streams support declarative programming. This is an offshoot of collections supporting external iteration whereas streams support internal iteration. When you use collections,
+you need to know “what” you want and “how” to get it; this is the feature of imperative programming. When you use streams, you specify only “what” you want in terms of stream operations; the “how” part is taken care by the
+Streams API. The Streams API supports the functional programming. Operations on a stream produce a result without modifying the data source. Like in the functional programming, when you use streams, you specify “what” operations
+you want to perform on its elements using the built-in methods provided by the Streams API, typically by passing a lambda expressions to those methods, customizing the behavior of those operations.
+
+Stream Operations
+A stream supports two types of operations:
+•	 Intermediate operations
+•	 Terminal operations
+
+Intermediate operations are also known as lazy operations. Terminal operations are also known as eager operations. Operations are known as lazy and eager based on the way they pull the data elements from the data
+source. A lazy operation on a stream does not process the elements of the stream until another eager operation is
+called on the stream.
+
+/*** Fig 1 ***/
+
+Stream processing does not start until a terminal operation is called. If you just call intermediate operations on a stream, nothing exciting happens, except that they create another stream objects in memory, without reading
+data from the data source. This implies that you must use a terminal operation on a stream for it to process the data to produce a result. This is also the reason that the terminal operation
+
+List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5);
+int sum = numbers.stream()
+.filter(n -> n % 2 == 1)
+.map(n -> n * n)
+.reduce(0, Integer::sum);
+
+/*** Fig 2 ***/
+
+
+Streams Are Not Reusable
+Unlike collections, streams are not reusable. They are one-shot objects. A stream cannot be reused after calling a terminal operation on it. If you need to perform a computation on the same elements from the same data source
+again, you must recreate the stream pipeline. A stream implementation may throw an IllegalStateException if it detects that the stream is being reused
+
+Architecture of the Streams API
+
+/*** Fig 3 ***/
+
+Methods common to all types of stream
+
+•	 Iterator<T> iterator(): It returns an iterator for the stream. You will almost never need to use this method in your code. This is a terminal operation. After calling this method, you cannot call any other methods on the stream.
+
+•	 S sequential(): It returns a sequential stream. If the stream is already sequential, it returns itself. Use this method to convert a parallel stream into a sequential stream. This is an intermediate operation.
+
+•	 S parallel(): It returns a parallel stream. If the stream is already parallel, it returns itself. Use this method to convert a parallel stream into a sequential stream. This is an intermediate operation.
+
+•	 boolean isParallel(): It returns true if the stream is parallel, false otherwise. The result is unpredictable when this method is called after invoking a terminal stream operation method.
+
+•	 S unordered(): It returns an unordered version of the stream. If the stream is already unordered, it returns itself. This is an intermediate operation. The Stream<T> interface represents a stream of the element type T; for example, a Stream<Person> represents a stream of Person objects. The interface contains methods representing intermediate and terminal operations such as filter(), map(), reduce(), collect(), max(), min(), etc.
+
+
+Creating Streams
+•	 Streams from values
+•	 Empty streams
+•	 Streams from functions
+•	 Streams from arrays
+•	 Streams from collections
+•	 Streams from files
+•	 Streams from other sources
+
+- Streams from Values
+
+The Stream interface contains the following two static of() methods to create a sequential Stream from a single value
+and multiple values:
+•	 <T> Stream<T> of(T t)
+•	 <T> Stream<T> of(T...values)
+The following snippet of code creates two streams:
+ 
+// Creates a stream with one string elements
+Stream<String> stream = Stream.of("Hello");
+ 
+// Creates a stream with four strings
+Stream<String> stream = Stream.of("Ken", "Jeff", "Chris", "Ellen");
+
+
+Empty Streams
+An empty stream is a stream with no elements. The Stream interface contains an empty() static method to create an empty sequential stream.
+ 
+// Creates an empty stream of strings
+Stream<String> stream = Stream.empty();
+ 
+The IntStream, LongStream, and DoubleStream interfaces also contain an empty() static method to create an empty stream of primitive types.
+ 
+// Creates an empty stream of integers
+IntStream numbers = IntStream.empty();
+
+
+Streams from Functions
+The Stream interface contains the following two static methods to generate an infinite stream:
+•	 <T> Stream<T> iterate(T seed, UnaryOperator<T> f)
+•	 <T> Stream<T> generate(Supplier<T> s)
+
+
+Streams from Collections
+The Collection interface contains the stream() and parallelStream() methods that create sequential and parallel streams from a Collection, respectively. The following snippet of code creates streams from a set of strings:
+ 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Stream;
+...
+// Create and populate a set of strings
+Set<String> names = new HashSet<>();
+names.add("Ken");
+names.add("jeff");
+ 
+// Create a sequential stream from the set
+Stream<String> sequentialStream = names.stream();
+ 
+// Create a parallel stream from the set
+Stream<String> parallelStream = names.parallelStream(); 
+
