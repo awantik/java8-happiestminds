@@ -1,0 +1,31 @@
+package LambdaExpressions;
+
+import java.util.ArrayList;
+import java.util.function.Consumer;
+
+class myIntf implements Consumer{
+
+	@Override
+	public void accept(Object t) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+}
+
+public class ArListPred {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		
+		ArrayList<Integer> ar = new ArrayList<>();
+		
+		ar.add(5);
+		ar.add(6);
+		ar.add(7);
+	
+		ar.forEach(new myIntf());
+
+	}
+
+}

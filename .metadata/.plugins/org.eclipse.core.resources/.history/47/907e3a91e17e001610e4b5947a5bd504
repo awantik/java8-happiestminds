@@ -1,0 +1,19 @@
+package StreamCode;
+
+import java.util.stream.Stream;
+
+public class StreamByValue {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		
+		int sum = Stream.of(1, 2, 3, 4, 5)
+				.filter(n -> n % 2 == 1)
+				.map(n -> n * n)
+				.reduce(0, Integer::sum);
+				 
+				System.out.println("Sum = " + sum);
+
+	}
+
+}

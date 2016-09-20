@@ -1,0 +1,16 @@
+package StreamCode;
+
+import java.util.stream.Stream;
+
+public class PrimeUtilTestCode {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		
+		Stream.iterate(2L, PrimeUtil::next)
+		.limit(5)
+		.forEach(System.out::println);
+
+	}
+
+}
