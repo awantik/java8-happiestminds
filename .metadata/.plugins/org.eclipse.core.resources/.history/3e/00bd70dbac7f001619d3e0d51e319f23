@@ -1,0 +1,53 @@
+package MoreStreamCode;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+class NewPerson {
+    String name;
+    int age;
+
+    NewPerson(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
+}
+
+
+public class AdvancedOperations {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		
+		List<NewPerson> persons =
+			    Arrays.asList(
+			        new NewPerson("Max", 18),
+			        new NewPerson("Peter", 23),
+			        new NewPerson("Pamela", 23),
+			        new NewPerson("David", 12));
+		
+		//Collect
+		List<NewPerson> filtered =
+			    persons
+			        .stream()
+			        .filter(p -> p.name.startsWith("P"))
+			        .collect(Collectors.toList());
+
+			System.out.println(filtered); 
+			
+			Map<Integer, List<NewPerson>> personsByAge = persons
+				    .stream()
+				    .collect(Collectors.groupingBy(p -> p.age));
+
+				personsByAge
+				    .forEach((age, p) -> System.out.format("age %s: %s\n", age, p));
+
+	}
+
+}

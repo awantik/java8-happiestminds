@@ -1,0 +1,22 @@
+package MoreStreamCode;
+
+import java.util.stream.Stream;
+
+public class FlatMapTest {
+
+
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		
+		Stream.of(1, 2, 3)
+		.map(n -> Stream.of(n, n * n))
+		.forEach(System.out::println);
+		//.forEach(e -> e.forEach(System.out::println));
+
+		Stream.of(1, 2, 3)
+		.flatMap(n -> Stream.of(n, n * n))
+		.forEach(System.out::println);
+	}
+
+}
