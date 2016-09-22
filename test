@@ -1,0 +1,17 @@
+Count String whose length is more than three
+Counting Empty String
+Count number of String which starts with "a"
+Remove all empty Strings from List
+Create a List with String more than 2 characters
+Convert String to uppercase and Join them with coma
+Implementing Runnable using Lambda expression
+Iterating over List using Lambda expressions
+Using Lambda expression and Functional interface Predicate for filtering data
+How to combine Predicate in Lambda Expressions
+Map and Reduce example in Java 8 using lambda expressions
+Map Reduce example using Lambda Expressions in Java 8
+Creating a List of String by filtering
+Applying function on Each element of List
+Creating a Sub List by Copying distinct values
+Calculating Maximum, Minimum, Sum and Average of List elements
+Create List of square of all distinct numbers
