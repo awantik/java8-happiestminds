@@ -5,6 +5,7 @@ import java.util.IntSummaryStatistics;
 import java.util.List;
 import java.util.Map;
 import java.util.StringJoiner;
+import java.util.function.BiConsumer;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
@@ -23,6 +24,18 @@ class NewPerson {
     }
 }
 
+class MyOwnBiConsumer implements BiConsumer<Integer,String>{
+
+	@Override
+	public void accept(Integer t, String u) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
+	
+}
+
 
 public class AdvancedOperations {
 
@@ -34,14 +47,16 @@ public class AdvancedOperations {
 			        new NewPerson("Max", 18),
 			        new NewPerson("Peter", 23),
 			        new NewPerson("Pamela", 23),
-			        new NewPerson("David", 12));
+			        new NewPerson("David", 23));
 		
 		//Collect
 		List<NewPerson> filtered =
 			    persons
 			        .stream()
 			        .filter(p -> p.name.startsWith("P"))
+			   
 			        .collect(Collectors.toList());
+		 
 
 			System.out.println(filtered); 
 			
@@ -51,6 +66,7 @@ public class AdvancedOperations {
 
 				personsByAge
 				    .forEach((age, p) -> System.out.format("age %s: %s\n", age, p));
+				   
 				
 				
 				
@@ -78,12 +94,18 @@ public class AdvancedOperations {
 							System.out.println(phrase);
 							
 		 //Map
+							System.out.println("Testing Map");
 							Map<Integer, String> map = persons
 								    .stream()
+								    
 								    .collect(Collectors.toMap(
 								        p -> p.age,
 								        p -> p.name,
-								        (name1, name2) -> name1 + ";" + name2));
+								        (name1, name2) -> {
+								        	System.out.println("name1" + name1);
+								        	return name1 + ";" + name2;
+								        	})
+								    		);
 
 								System.out.println(map);
 								
@@ -97,6 +119,7 @@ public class AdvancedOperations {
 
 									String names = persons
 									    .stream()
+									    .coll
 									    .collect(personNameCollector);
 
 									System.out.println(names); 
